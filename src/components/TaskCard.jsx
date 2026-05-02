@@ -2,10 +2,21 @@ import { Popconfirm, Tag, Tooltip } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import AppButton from "./ui/AppButton.jsx";
 
-export default function TaskCard({ task, onDelete }) {
+export default function TaskCard({ task, onToggle, onDelete }) {
   return (
     <article className="task-card rounded-lg border border-slate-200 bg-white p-4">
       <div className="flex items-start gap-3">
+        <label className="mt-1 inline-flex cursor-pointer items-center" aria-label={`Ubah status ${task.title}`}>
+          <input
+            type="checkbox"
+            checked={task.completed}
+            onChange={() => onToggle(task.id)}
+            className="peer sr-only"
+          />
+          <span className="grid h-6 w-6 place-items-center rounded-md border-2 border-slate-300 bg-white text-sm font-bold text-white transition peer-checked:border-lagoon-500 peer-checked:bg-lagoon-500">
+            {task.completed ? "✓" : ""}
+          </span>
+        </label>
 
         <div className="min-w-0 flex-1">
           <h2

@@ -1,5 +1,6 @@
 import { lazy, Suspense, useState } from "react";
 import AppButton from "./components/ui/AppButton.jsx";
+import MenuToggleIcon from "./components/ui/MenuToggleIcon.jsx";
 import SidebarNavigation from "./components/SidebarNavigation.jsx";
 import useAppStore from "./store/index.js";
 
@@ -105,22 +106,20 @@ export default function App() {
           <div className="flex items-center gap-3 lg:hidden">
             <AppButton
               type="primary"
+              icon={<MenuToggleIcon />}
               onClick={() => setIsMobileMenuOpen(true)}
               aria-label="Buka menu sidebar"
-            >
-              Menu
-            </AppButton>
+            />
           </div>
 
           {!isSidebarOpen ? (
             <div className="hidden lg:block">
               <AppButton
                 type="primary"
+                icon={<MenuToggleIcon />}
                 onClick={() => setIsSidebarOpen(true)}
                 aria-label="Buka sidebar"
-              >
-                Buka Sidebar
-              </AppButton>
+              />
             </div>
           ) : null}
 
