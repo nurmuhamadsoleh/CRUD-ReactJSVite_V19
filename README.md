@@ -30,7 +30,6 @@ Contoh konfigurasi tersedia di `.env.example`.
 VITE_API_URL=https://jsonplaceholder.typicode.com/todos
 VITE_STORAGE_KEY=task-management-app.local-tasks.v2
 VITE_DELETED_STORAGE_KEY=task-management-app.deleted-task-ids.v2
-VITE_ZUSTAND_STORE_NAME=TaskManagementApp
 ```
 
 ## Menu Aplikasi
