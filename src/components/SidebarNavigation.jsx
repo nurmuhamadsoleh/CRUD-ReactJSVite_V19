@@ -1,3 +1,4 @@
+import { NavLink } from "react-router";
 import AppButton from "./ui/AppButton.jsx";
 
 const navigationItems = [
@@ -5,25 +6,29 @@ const navigationItems = [
     key: "dashboard",
     icon: "D",
     label: "Dashboard",
+    path: "/dashboard",
   },
   {
     key: "tasks",
     icon: "T",
     label: "Tasks",
+    path: "/tasks",
   },
   {
     key: "reports",
     icon: "R",
     label: "Reports",
+    path: "/reports",
   },
   {
     key: "settings",
     icon: "S",
     label: "Settings",
+    path: "/settings",
   },
 ];
 
-export default function SidebarNavigation({ activePage, onNavigate, onClose, stats, isMobile = false }) {
+export default function SidebarNavigation({ onNavigate, onClose, stats, isMobile = false }) {
   return (
     <nav className="flex h-full w-[300px] flex-col border-r border-slate-200 bg-white px-4 py-5 shadow-soft lg:w-[280px]">
       <div className="mb-6 flex items-center justify-between gap-3">
@@ -44,20 +49,21 @@ export default function SidebarNavigation({ activePage, onNavigate, onClose, sta
       </div>
 
       <div className="grid gap-2">
-        {navigationItems.map((item) => {
-          const isActive = activePage === item.key;
-
-          return (
-            <button
-              key={item.key}
-              className={`flex h-12 items-center gap-3 rounded-lg px-3 text-left text-sm font-semibold transition ${
+        {navigationItems.map((item) => (
+          <NavLink
+            key={item.key}
+            to={item.path}
+            className={({ isActive }) =>
+              `flex h-12 items-center gap-3 rounded-lg px-3 text-left text-sm font-semibold transition ${
                 isActive
                   ? "bg-lagoon-500 text-white"
                   : "text-ink-700 hover:bg-slate-100 hover:text-lagoon-600"
-              }`}
-              type="button"
-              onClick={() => onNavigate(item.key)}
-            >
+              }`
+            }
+            onClick={onNavigate}
+          >
+            {({ isActive }) => (
+              <>
               <span
                 className={`grid h-8 w-8 place-items-center rounded-lg text-xs ${
                   isActive ? "bg-white/20" : "bg-slate-100"
@@ -67,9 +73,10 @@ export default function SidebarNavigation({ activePage, onNavigate, onClose, sta
                 {item.icon}
               </span>
               {item.label}
-            </button>
-          );
-        })}
+              </>
+            )}
+          </NavLink>
+        ))}
       </div>
 
       <div className="mt-auto rounded-lg border border-slate-200 bg-slate-50 p-4">

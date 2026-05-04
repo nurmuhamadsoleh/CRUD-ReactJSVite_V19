@@ -1,4 +1,5 @@
 import { lazy, Suspense, useState } from "react";
+import { Navigate, Route, Routes } from "react-router";
 import AppButton from "./components/ui/AppButton.jsx";
 import MenuToggleIcon from "./components/ui/MenuToggleIcon.jsx";
 import SidebarNavigation from "./components/SidebarNavigation.jsx";
@@ -16,7 +17,6 @@ const emptyTotals = {
 };
 
 export default function App() {
-  const [activePage, setActivePage] = useState("dashboard");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [previewDevice, setPreviewDevice] = useState("laptop");
@@ -28,44 +28,8 @@ export default function App() {
     pending: totals.pending,
   };
 
-  const handleNavigate = (page) => {
-    setActivePage(page);
+  const handleNavigate = () => {
     setIsMobileMenuOpen(false);
-  };
-
-  const renderPage = () => {
-    if (activePage === "dashboard") {
-      return (
-        <DashboardContainer
-          previewDevice={previewDevice}
-          onDeviceChange={setPreviewDevice}
-          stats={stats}
-        />
-      );
-    }
-
-    if (activePage === "reports") {
-      return (
-        <ReportsContainer
-          previewDevice={previewDevice}
-          onDeviceChange={setPreviewDevice}
-          stats={stats}
-        />
-      );
-    }
-
-    if (activePage === "settings") {
-      return (
-        <SettingsContainer
-          isSidebarOpen={isSidebarOpen}
-          onDeviceChange={setPreviewDevice}
-          onSidebarOpenChange={setIsSidebarOpen}
-          previewDevice={previewDevice}
-        />
-      );
-    }
-
-    return <TasksContainer previewDevice={previewDevice} onDeviceChange={setPreviewDevice} />;
   };
 
   return (
@@ -73,7 +37,6 @@ export default function App() {
       {isSidebarOpen ? (
         <aside className="sticky top-0 hidden h-screen shrink-0 lg:block">
           <SidebarNavigation
-            activePage={activePage}
             onNavigate={handleNavigate}
             onClose={() => setIsSidebarOpen(false)}
             stats={stats}
@@ -91,7 +54,6 @@ export default function App() {
           />
           <div className="relative h-full w-[300px] max-w-[86vw]">
             <SidebarNavigation
-              activePage={activePage}
               onNavigate={handleNavigate}
               onClose={() => setIsMobileMenuOpen(false)}
               stats={stats}
@@ -130,7 +92,47 @@ export default function App() {
               </div>
             }
           >
-            {renderPage()}
+            <Routes>
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <DashboardContainer
+                    previewDevice={previewDevice}
+                    onDeviceChange={setPreviewDevice}
+                    stats={stats}
+                  />
+                }
+              />
+              <Route
+                path="/tasks"
+                element={
+                  <TasksContainer previewDevice={previewDevice} onDeviceChange={setPreviewDevice} />
+                }
+              />
+              <Route
+                path="/reports"
+                element={
+                  <ReportsContainer
+                    previewDevice={previewDevice}
+                    onDeviceChange={setPreviewDevice}
+                    stats={stats}
+                  />
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  <SettingsContainer
+                    isSidebarOpen={isSidebarOpen}
+                    onDeviceChange={setPreviewDevice}
+                    onSidebarOpenChange={setIsSidebarOpen}
+                    previewDevice={previewDevice}
+                  />
+                }
+              />
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
           </Suspense>
         </div>
       </main>
